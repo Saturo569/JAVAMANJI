@@ -1,0 +1,100 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>About us</title>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+  <style>
+
+@font-face {
+            font-family:'Forta';
+            src: url(fonts/Forta.ttf);
+        }
+
+    body {
+      background-image: url(bgg.gif);
+       background-repeat: no-repeat;
+      background-size: 100%;
+      font-family: 'Forta', sans-serif;
+      padding: 40px;
+    }
+
+    .gallery {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+      gap: 20px;
+      max-width: 40rem;
+      margin: 0 auto;
+    }
+
+    .frame {
+      padding: 10px;
+      background: #86c1de;
+      box-shadow:
+            inset -4px 6px 1px grey,
+            inset -4px -2px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+      border-radius: 16px;
+      transition: transform 0.3s ease, box-shadow 0.3s ease;
+    }
+
+    .frame:hover {
+      transform: scale(1.05);
+      box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+    }
+
+    .frame img {
+      max-width: 50%;
+      align-content: center;
+      border-radius: 8px;
+      display: block;
+    }
+
+    h2{
+      font-size: 1rem;
+    }
+
+    h3{
+    font-size: 0.8rem;
+    }
+
+    .System{
+      text-align: center;
+    }
+
+    .about{
+      text-align: center;
+      font-size: 3rem;
+    }
+
+    
+  </style>
+</head>
+<body>
+  <div class="top">
+    <h1 class="about">About us</h1>
+  </div>
+
+  <h1 class="System">System developers</h1>
+
+  <div class="gallery">
+    <div class="frame"><img src="justin.jpg">
+      <hr>
+    <h2>Justin Ross Estacio</h2>
+    <h3>12-ICT-TITUS</h3>
+    <h3>front/back end</h3></div>
+    <div class="frame"><img src="steven.png">
+      <hr>
+    <h2>Steven Kazer Ilagan</h2>
+    <h3>12-ICT-TITUS</h3>
+    <h3>front end </h3></div>
+    <div class="frame"><img src="matt.png">
+      <hr>
+    <h2>Matt Goshen Ison</h2>
+    <h3>12-ICT-TITUS</h3>
+    <h3>front end</h3></div>
+    
+  </div>
+
+</body>
+</html>

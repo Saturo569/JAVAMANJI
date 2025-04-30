@@ -1,0 +1,964 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Game with Quiz</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <style>
+        @font-face {
+            font-family:'Forta';
+            src: url(fonts/Forta.ttf);
+        }
+        body {
+            margin: 0;
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            font-family: 'good-timing-font';
+            background-color: black;
+            overflow: hidden; /* Prevent scrollbars */
+        }
+
+        canvas {
+            position: absolute; /* Position absolute to allow fullscreen */
+            top: 0;
+            left: 0;
+            width: 100vw; /* Full viewport width */
+            height: 100vh; /* Full viewport height */
+            z-index: 1; /* Keep canvas below UI elements */
+        }
+
+        #timer {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            font-size: 30px;
+            color: rgb(22, 21, 21);
+            z-index: 2;
+            font-family: 'forta';
+            border-radius: 20px;
+            background: #86c1de;
+            padding: 10px;
+            box-shadow:
+            inset -6px 4px 1px grey,
+            inset -6px -4px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+        }
+
+        #score {
+            position: absolute;
+            top: 20px;
+            background: #86c1de;
+            right: 20px;
+            font-size: 30px;
+            color: rgb(22, 21, 21);
+            z-index: 2;
+            font-family: 'forta';
+            border-radius: 20px;
+            box-shadow:
+            inset -6px 4px 1px grey,
+            inset -6px -4px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+            padding: 10px;
+        }
+
+        .quiz-container {
+            position: absolute;
+            top: 25%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: #86c1de;
+            padding: 10px 20px;
+            border-radius: 8px;
+            color:black;
+            display: none;
+            z-index: 3;
+            font-size: 12px;
+            width: 80%;
+            max-width: 500px;
+            font-family: 'forta';
+            box-shadow:
+            inset -6px 4px 1px grey,
+            inset -6px -4px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+        }
+
+        .quiz-container button {
+            background: #86c1de;
+            color: black;
+            padding: 10px;
+            margin: 10px;
+            border: none;
+            cursor: pointer;
+            border-radius: 4px;
+            font-family: 'forta';
+            box-shadow:
+            inset -2px 2px 1px grey,
+            inset -2px -4px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+        }
+
+        .quiz-container button:hover {
+            background-color:#78adc7 ;
+        }
+
+        .quiz-container button:active {
+            box-shadow:
+            -6px 2px 1px #191919,
+               -6px -2px 1px 1px#191919,
+               2px 0px 1px 1px #191919;
+        }
+
+        #feedback {
+            margin-top: 10px;
+            font-size: 20px;
+            color: #ffcc00;
+        }
+
+        #timeUpMessage {
+            font-size: 50px;
+            font-family: 'forta';
+            color: black;
+           
+            display: none;
+            
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 4;
+            text-align: center;
+            padding: 20px;
+            border-radius: 10px;
+        }
+        #finalScore {
+            font-size: 40px;
+            font-family: 'forta';
+            color: white;
+            display: none;
+            position: fixed;
+            top: 35%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            z-index: 5;
+            text-align: center;
+            background-color: rgba(0, 0, 0, 0.7);
+            padding: 20px;
+            border-radius: 10px;
+        }
+
+        #exitButton {
+            position: absolute;
+            bottom: 20px;
+            right: 20px;
+            z-index: 3;
+            background-color: #ff4545;
+            color: white;
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+            font-family: 'forta';
+        }
+
+        #exitButton:hover{
+            background-color: darkred;
+        }
+
+
+        img{
+            width: 500px;
+        }
+       
+    </style>
+</head>
+<body>
+    <div id="timer" class="timer">03:00</div>
+    <div id="score" class="score">Score: 0</div>
+    <div id="timeUpMessage"><img src="Goodjob.png"></div>
+    <div id="finalScoreMessage" class="final-score-message">Final Score: 0</div>
+    <div id="finalScore"></div>
+
+    <div class="quiz-container" id="quizContainer">
+        <h2 id="questionText">Loading question...</h2>
+        <div id="answerButtons">
+            <button>Loading...</button>
+            <button>Loading...</button>
+            <button>Loading...</button>
+            <button>Loading...</button>
+        </div>
+        <div id="feedback"></div> 
+    </div>
+
+    <a href="home.html"><button id="exitButton">Exit Game</button></a>
+    <script src="leaderboard.js"></script>
+    <script src="indexeddb.js"></script>
+    <script>
+           // leaderboard
+           window.onload = function () {
+        displayLeaderboard(); // Load leaderboard on page load
+    };
+
+
+        const canvas = document.createElement('canvas');
+        document.body.appendChild(canvas);
+        const c = canvas.getContext('2d');
+        canvas.width = 1024;
+        canvas.height = 576;
+
+        const exitButton = document.getElementById('exitButton');
+        exitButton.addEventListener('click', function() {
+            exitGame();
+        });
+
+       
+        // Define an array of background images
+        const backgroundImages = [
+            '/bgg.gif',
+            '/naruto.jpg',  
+            '/jjk.jpg',  
+            '/naruto1.jpg',
+            '/backgrounds/ako.jpg',
+            '/backgrounds/naks.jpg',
+            '/backgrounds/dami.jpg',
+            '/backgrounds/a.png',  
+            '/backgrounds/naks.jpg',  
+            '/backgrounds/naks.jpg',  
+            '/backgrounds/d.jpg',
+            '/backgrounds/ako.jpg',
+            '/backgrounds/naks.jpg',
+        ];
+        
+        // Current background index
+        let currentBgIndex = 0;
+
+        let img = new Image();
+        img.src = backgroundImages[currentBgIndex];
+
+        let newImg = new Image();
+        newImg.src = backgroundImages[1]; // Start with the second image ready
+
+        // Brick image
+        let brickImg = new Image();
+        brickImg.src = 'brick.png'; // Make sure to load your brick image
+
+        let transitioning = false;
+        let doorReached = false;
+        let transitionProgress = 0;
+        let transitionComplete = false;
+        let isDisplaced = false; // Flag to track if character is away from original position
+        let platformAnimationProgress = 0; // For smooth platform transitions
+
+        // Define platform layouts for each background
+        const platformLayouts = [
+    // Layout 0 - Initial
+    [
+        { x: 20, y: 200, width: 200, height: 40 },
+        { x: 380, y: 300, width: 200, height: 40 },
+        { x: 700, y: 435, width: 200, height: 40 }
+    ],
+    // Layout 1
+    [
+        { x: 150, y: 200, width: 200, height: 40 },
+        { x: 400, y: 250, width: 200, height: 40 },
+        { x: 650, y: 400, width: 200, height: 40 }
+    ],
+    // Layout 2
+    [
+        { x: 100, y: 420, width: 200, height: 40 },
+        { x: 350, y: 320, width: 200, height: 40 },
+        { x: 600, y: 220, width: 200, height: 40 }
+    ],
+    // Layout 3
+    [
+        { x: 250, y: 400, width: 200, height: 40 },
+        { x: 500, y: 320, width: 200, height: 40 },
+        { x: 750, y: 240, width: 200, height: 40 }
+    ],
+    // Layout 4
+    [
+        { x: 200, y: 450, width: 200, height: 40 },
+        { x: 500, y: 350, width: 200, height: 40 },
+        { x: 200, y: 250, width: 200, height: 40 }
+    ],
+    // Layout 5
+    [
+        { x: 150, y: 400, width: 200, height: 40 },
+        { x: 450, y: 300, width: 200, height: 40 },
+        { x: 750, y: 200, width: 200, height: 40 }
+    ],
+    // Layout 6
+    [
+        { x: 300, y: 450, width: 200, height: 40 },
+        { x: 300, y: 300, width: 200, height: 40 },
+        { x: 600, y: 250, width: 200, height: 40 }
+    ],
+    // Layout 7
+    [
+        { x: 100, y: 350, width: 200, height: 40 },
+        { x: 400, y: 280, width: 200, height: 40 },
+        { x: 700, y: 350, width: 200, height: 40 }
+    ],
+    // Layout 8 - Vertical Stack
+    [
+        { x: 400, y: 200, width: 200, height: 40 },
+        { x: 400, y: 300, width: 200, height: 40 },
+        { x: 400, y: 400, width: 200, height: 40 }
+    ],
+   // Layout 9 - Horizontal Row
+[
+    { x: 100, y: 400, width: 200, height: 40 },  // First platform
+    { x: 350, y: 400, width: 200, height: 40 },  // Second platform
+    { x: 600, y: 400, width: 200, height: 40 }   // Third platform
+],
+
+// Layout 10 - Triangle Formation
+[
+    { x: 400, y: 250, width: 200, height: 40 },  // Top platform
+    { x: 250, y: 350, width: 200, height: 40 },  // Left platform
+    { x: 550, y: 350, width: 200, height: 40 }   // Right platform
+],
+    // Layout 11 - Zigzag Pattern
+    [
+        { x: 100, y: 250, width: 200, height: 40 },
+        { x: 400, y: 350, width: 200, height: 40 },
+        { x: 700, y: 250, width: 200, height: 40 }
+    ],
+    // Layout 12 - Cascading Steps
+    [
+        { x: 150, y: 200, width: 200, height: 40 },
+        { x: 300, y: 300, width: 200, height: 40 },
+        { x: 450, y: 400, width: 200, height: 40 }
+    ],
+    // Layout 13 - Corner Placement
+    [
+        { x: 100, y: 150, width: 200, height: 40 },
+        { x: 700, y: 150, width: 200, height: 40 },
+        { x: 400, y: 450, width: 200, height: 40 }
+    ],
+    // Layout 14 - Diamond Pattern
+    [
+        { x: 400, y: 200, width: 200, height: 40 },
+        { x: 250, y: 350, width: 200, height: 40 },
+        { x: 550, y: 350, width: 200, height: 40 }
+    ]
+];
+        // Store current and next platform positions
+        let currentPlatformLayout = platformLayouts[0];
+        let nextPlatformLayout = platformLayouts[0];
+
+        class Sprite {
+            constructor({ position, imageSrc }) {
+                this.position = position;
+                this.image = new Image();
+                this.image.src = imageSrc;
+            }
+
+            draw() {
+                if (this.image.complete) {
+                    c.drawImage(this.image, this.position.x, this.position.y);
+                }
+            }
+        }
+
+        class Platform {
+            constructor({ position, width, height, image }) {
+                this.position = position;
+                this.width = width;
+                this.height = height;
+                this.image = image;
+                this.targetPosition = { ...position }; // For smooth transition
+            }
+
+            draw() {
+                if (this.image && this.image.complete) {
+                    c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+                } else {
+                    // Fallback if image isn't loaded
+                    c.fillStyle = 'brown';
+                    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+                }
+            }
+
+            updatePosition(progress) {
+                // Smoothly interpolate between current and target position
+                this.position.x = this.position.x + (this.targetPosition.x - this.position.x) * progress;
+                this.position.y = this.position.y + (this.targetPosition.y - this.position.y) * progress;
+            }
+        }
+
+        class Player {
+            constructor() {
+                this.position = { x: 100, y: 100 };
+                this.originalPosition = { x: 100, y: 100 }; // Store original position
+                this.velocity = { x: 0, y: 0 };
+                this.width = 50;
+                this.height = 50;
+                this.sides = { 
+                    bottom: this.position.y + this.height,
+                    top: this.position.y,
+                    left: this.position.x, 
+                    right: this.position.x + this.width 
+                };
+                this.gravity = 1;
+                this.speed = 8;
+                this.jumpPower = -20;
+                this.image = new Image();
+                this.image.src = 'character.png'; // Replace with your image path
+            }
+
+            draw() {
+                if (this.image.complete) {
+                    c.drawImage(this.image, this.position.x, this.position.y, this.width, this.height);
+                } else {
+                    c.fillStyle = 'green';
+                    c.fillRect(this.position.x, this.position.y, this.width, this.height);
+                }
+            }
+
+            update(platforms) {
+                this.position.x += this.velocity.x;
+                this.position.y += this.velocity.y;
+
+                this.sides.left = this.position.x;
+                this.sides.right = this.position.x + this.width;
+                this.sides.top = this.position.y;
+                this.sides.bottom = this.position.y + this.height;
+
+                // Apply gravity
+                this.velocity.y += this.gravity;
+                
+                // Check for collisions with platforms
+                this.isOnGround = false;
+                
+                for (const platform of platforms) {
+                    // Check if player is on top of a platform
+                    if (this.sides.bottom >= platform.position.y && 
+                        this.sides.bottom <= platform.position.y + 20 &&
+                        this.sides.right >= platform.position.x && 
+                        this.sides.left <= platform.position.x + platform.width &&
+                        this.velocity.y >= 0) {
+                        
+                        this.velocity.y = 0;
+                        this.position.y = platform.position.y - this.height;
+                        this.isOnGround = true;
+                    }
+                }
+                
+                // Check for ground collision
+                if (this.sides.bottom >= canvas.height) {
+                    this.velocity.y = 0;
+                    this.position.y = canvas.height - this.height;
+                    this.isOnGround = true;
+                }
+
+                // Check boundaries
+                if (this.position.x < 0) this.position.x = 0;
+                if (this.position.x + this.width > canvas.width) this.position.x = canvas.width - this.width;
+                
+                // Check if player has moved from original position
+                if (!isDisplaced && (this.position.x !== this.originalPosition.x || this.position.y !== this.originalPosition.y)) {
+                    isDisplaced = true;
+                }
+            }
+            
+            // Method to return character to original position
+            returnToOriginalPosition() {
+                this.position.x = this.originalPosition.x;
+                this.position.y = this.originalPosition.y;
+                this.velocity = { x: 0, y: 0 };
+                isDisplaced = false;
+            }
+            
+            jump() {
+                if (this.isOnGround) {
+                    this.velocity.y = this.jumpPower;
+                }
+            }
+        }
+
+        const player = new Player();
+
+        // Create platforms using the brick image
+        const platforms = platformLayouts[0].map(layout => new Platform({
+            position: { x: layout.x, y: layout.y },
+            width: layout.width,
+            height: layout.height,
+            image: brickImg
+        }));
+
+        const doors = [
+            new Sprite({ position: { x: 800, y: 325 }, imageSrc: '/doorOpen.png' }),
+        ];
+
+        let timeLeft = 1 * 180; // 5 minutes
+        let score = 0;
+        let quizActive = false; // Set to false initially
+        let lastQuestionTime = 0; // Track when the last question was shown
+
+        function formatTime(seconds) {
+            const minutes = Math.floor(seconds / 60);
+            const remainingSeconds = seconds % 60;
+            return `${String(minutes).padStart(2, '0')}:${String(remainingSeconds).padStart(2, '0')}`;
+        }
+
+        const keys = { 
+            w: { pressed: false }, 
+            d: { pressed: false }, 
+            a: { pressed: false }, 
+            p: { pressed: false }, 
+            ' ': { pressed: false }, // Space key for jumping
+            '1': { pressed: false }, 
+            '2': { pressed: false }, 
+            '3': { pressed: false }, 
+            '4': { pressed: false },
+            't': { pressed: false } // Test key
+        };
+
+        window.addEventListener('keydown', (e) => {
+            if (e.key === 'd') keys.d.pressed = true;
+            if (e.key === 'a') keys.a.pressed = true;
+            if (e.key === 'w' || e.key === ' ') {
+                keys.w.pressed = true;
+                keys[' '].pressed = true;
+                // Only jump if not in a quiz
+                if (!quizActive) {
+                    player.jump();
+                }
+            }
+            if (e.key === 'p') keys.p.pressed = true;
+            if (e.key === '1') keys['1'].pressed = true;
+            if (e.key === '2') keys['2'].pressed = true;
+            if (e.key === '3') keys['3'].pressed = true;
+            if (e.key === '4') keys['4'].pressed = true;
+            if (e.key === 't') {
+                // Test transition
+                changeBackground();
+            }
+        });
+
+        window.addEventListener('keyup', (e) => {
+            if (e.key === 'd') keys.d.pressed = false;
+            if (e.key === 'a') keys.a.pressed = false;
+            if (e.key === 'w') keys.w.pressed = false;
+            if (e.key === ' ') keys[' '].pressed = false;
+            if (e.key === 'p') keys.p.pressed = false;
+            if (e.key === '1') keys['1'].pressed = false;
+            if (e.key === '2') keys['2'].pressed = false;
+            if (e.key === '3') keys['3'].pressed = false;
+            if (e.key === '4') keys['4'].pressed = false;
+            if (e.key === 't') keys.t.pressed = false;
+        });
+
+        let gameOver = false; // Flag to indicate if the game is over
+
+function updateTimer() {
+    const timerDisplay = document.getElementById('timer');
+    if (timerDisplay) {
+        timerDisplay.textContent = formatTime(timeLeft);
+    }
+
+    if (timeLeft === 0) {
+        clearInterval(timerInterval);
+        gameOver = true; // Set game over flag
+        document.getElementById('timeUpMessage').style.display = 'block'; // Display "Time's up!" message
+
+        // Show the final score when the timer is up
+        setTimeout(function () {
+            const finalScoreElement = document.getElementById('finalScore');
+            finalScoreElement.textContent = `Final Score: ${score}`;
+            finalScoreElement.style.display = 'block'; // Make it visible
+            saveFinalScore(); // Save score to leaderboard
+        }, 1000);
+    } else {
+        timeLeft--;
+    }
+}
+       
+        const timerInterval = setInterval(updateTimer, 1000);
+
+        const quizQuestions = [
+            {
+                question: "It is a popular programming language, created in 1995 and It is owned by Oracle.",
+                answers: ["Python", "php", "Java"],
+                correct: 2
+            },
+            {
+                question: "What method of Java to print?",
+                answers: ["System.out.println();", "print()", "printf()"],
+                correct: 0
+            },
+            {
+                question: "In Java Output: Print numbers, can we perform a mathematical calculations inside the println?",
+                answers: ["Yes", "No", "Maybe"],
+                correct: 0
+            },
+            {
+                question: "What keyword is used to define a class in Java?",
+                answers: ["class", "def", "function", "type"],
+                correct: 0
+            },
+            {
+                question: "Which method is used to start the execution of a Java program?",
+                answers: ["start()", "run()", "main()", "execute()"],
+                correct: 2
+            },
+            {
+                question: "Which of these is not a primitive data type in Java?",
+                answers: ["int", "boolean", "String", "char"],
+                correct: 2
+            },
+            {
+                question: "Which of the following is used to handle exceptions in Java?",
+                answers: ["try-catch", "throw-catch", "catch-throw", "if-else"],
+                correct: 0
+            },
+            {
+                question: "What does the 'this' keyword refer to in Java?",
+                answers: ["The current class", "The previous class", "The current object", "The method"],
+                correct: 2
+            },
+            // New Questions Added
+            {
+                question: "These used to perform operations on variables and values.",
+                answers: ["Java Operators", "Arithmetic Operators", "Python Operators"],
+                correct: 0
+            },
+            {
+                question: "Java operators that used to perform common mathematical operations.",
+                answers: ["Comparison Operators", "Bitwise Operators", "Arithmetic Operators"],
+                correct: 2
+            },
+            {
+                question: "Java operators that used to assign values to variables.",
+                answers: ["Arithmetic Operators", "Assignment Operators", "Comparison Operators"],
+                correct: 1
+            },
+            {
+                question: "Java operators that used to compare two values (or variables).",
+                answers: ["Comparison Operators", "Boolean", "Java"],
+                correct: 0
+            },
+            {
+                question: "Java operators that used to determine the logic between variables or values.",
+                answers: ["Comparison Operators", "Logical Operators", "Bitwise Operators"],
+                correct: 1
+            },
+            {
+                question: "A variable that stores integers (whole numbers), without decimals, such as 123 or -123.",
+                answers: ["int", "Strings", "char"],
+                correct: 0
+            },
+            {
+                question: "A variable that stores floating point numbers, with decimals, such as 19.99 or -19.99.",
+                answers: ["boolean", "char", "float"],
+                correct: 2
+            },
+            {
+                question: "What will be the output on this code: String name = 'John'; System.out.println(name);",
+                answers: ["John", "name", "System.out.println"],
+                correct: 0
+            },
+            {
+                question: "What will be the output on this code: System.out.println('Hello, world!');",
+                answers: ["'Hello,world!'", "hello world", "'Hello, world!'"],
+                correct: 2
+            },
+            {
+                question: "What will be the output on this code: int x = 5; int y = 5; System.out.println(x + y);",
+                answers: ["10", "'10'", "100"],
+                correct: 0
+            }
+        ];
+
+        let currentQuestionIndex = 0;
+
+        function startQuiz() {
+            if (!quizActive) {
+                quizActive = true;
+                lastQuestionTime = Date.now();
+
+                const quizContainer = document.getElementById('quizContainer');
+                quizContainer.style.display = 'block';
+
+                const question = quizQuestions[currentQuestionIndex];
+                document.getElementById('questionText').textContent = question.question;
+
+                const answerButtons = document.getElementById('answerButtons');
+                answerButtons.innerHTML = '';
+
+                question.answers.forEach((answer, index) => {
+                    const button = document.createElement('button');
+                    button.textContent = answer;
+                    button.onclick = () => checkAnswer(index);
+                    answerButtons.appendChild(button);
+                });
+
+                document.getElementById('feedback').textContent = '';
+            }
+        }
+
+        // Function to change to the next background and platform layout
+        function changeBackground() {
+            if (transitioning) return; // Don't start a new transition if one is in progress
+            
+            // Increment the background index
+            currentBgIndex = (currentBgIndex + 1) % backgroundImages.length;
+            
+            // Set the new background image
+            newImg.src = backgroundImages[currentBgIndex];
+            
+            // Set the next platform layout
+            nextPlatformLayout = platformLayouts[currentBgIndex % platformLayouts.length];
+            
+            // Set target positions for each platform
+            platforms.forEach((platform, index) => {
+                platform.targetPosition = { 
+                    x: nextPlatformLayout[index].x, 
+                    y: nextPlatformLayout[index].y 
+                };
+            });
+            
+            // Update door position based on the last platform
+            if (doors.length > 0) {
+                const lastPlatform = nextPlatformLayout[nextPlatformLayout.length - 1];
+                doors[0].position.x = lastPlatform.x + lastPlatform.width/2;
+                doors[0].position.y = lastPlatform.y - 110; // Position door above the platform
+            }
+            
+            // Start the transition
+            transitioning = true;
+            transitionProgress = 0;
+            platformAnimationProgress = 0;
+            transitionComplete = false;
+        }
+
+        function checkAnswer(selectedIndex) {
+    if (!quizActive || gameOver) return; // Prevent interaction if game is over
+
+    const question = quizQuestions[currentQuestionIndex];
+    const feedbackElement = document.getElementById('feedback');
+    
+    if (selectedIndex === question.correct) {
+        score++;
+        feedbackElement.textContent = 'Correct!';
+        feedbackElement.style.color = '#4CAF50';
+    } else {
+        feedbackElement.textContent = 'Incorrect!';
+        feedbackElement.style.color = '#f44336';
+    }
+    
+    // Change background regardless of whether answer is correct or incorrect
+    changeBackground();
+    
+    // Return character to original position
+    player.returnToOriginalPosition();
+    
+    // Allow time for feedback before hiding the quiz
+    setTimeout(() => {
+        document.getElementById('quizContainer').style.display = 'none';
+        quizActive = false;
+        
+        // Reset doorReached to allow triggering the quiz again
+        doorReached = false;
+    }, 1000);
+
+    currentQuestionIndex = (currentQuestionIndex + 1) % quizQuestions.length; // Cycle through questions
+    document.getElementById('score').textContent = `Score: ${score}`;
+}
+
+        function transitionBackground() {
+            if (!transitioning) return;
+
+            transitionProgress += 0.01; // Slower transition for better effect
+            platformAnimationProgress += 0.02; // Platforms move a bit faster than background
+            
+            if (transitionProgress >= 1) {
+                transitionProgress = 1;
+                transitionComplete = true;
+            }
+            
+            if (platformAnimationProgress > 1) platformAnimationProgress = 1;
+
+            // Draw the current image with fading out effect
+            c.globalAlpha = 1 - transitionProgress;
+            c.drawImage(img, 0, 0, canvas.width, canvas.height);
+
+            // Draw the new image with fading in effect
+            c.globalAlpha = transitionProgress;
+            c.drawImage(newImg, 0, 0, canvas.width, canvas.height);
+
+            // Reset alpha for other elements
+            c.globalAlpha = 1;
+
+            // Update platform positions
+            platforms.forEach(platform => {
+                platform.updatePosition(platformAnimationProgress);
+            });
+
+            if (transitionComplete && transitionProgress >= 1 && platformAnimationProgress >= 1) {
+                // Complete the transition
+                img.src = newImg.src;
+                
+                // Update current platform layout
+                currentPlatformLayout = nextPlatformLayout;
+                
+                // Finalize platform positions
+                platforms.forEach((platform, index) => {
+                    platform.position.x = platform.targetPosition.x;
+                    platform.position.y = platform.targetPosition.y;
+                });
+                
+                transitioning = false;
+                transitionProgress = 0;
+                platformAnimationProgress = 0;
+            }
+        }
+
+       
+function animate() {
+    window.requestAnimationFrame(animate);
+    
+    // Clear the canvas
+    c.clearRect(0, 0, canvas.width, canvas.height);
+
+    if (transitioning) {
+        // Handle the background transition
+        transitionBackground();
+    } else {
+        // Draw the background
+        if (img.complete) {
+            c.drawImage(img, 0, 0, canvas.width, canvas.height);
+        }
+    }
+    
+    // Draw platforms
+    platforms.forEach(platform => platform.draw());
+
+    // Draw doors
+    doors.forEach(door => door.draw());
+
+    // Only allow movement if quiz is not active and game is not over
+    if (!quizActive && !gameOver) {
+        // Handle player movement
+        player.velocity.x = 0;
+        if (keys.d.pressed && player.sides.right < canvas.width) { player.velocity.x = player.speed; }
+        if (keys.a.pressed && player.sides.left > 0) { player.velocity.x = -player.speed; }
+    } else {
+        player.velocity.x = 0; // Stop player movement if quiz is active or game is over
+    }
+
+    // Update and draw the player
+    player.draw();
+    player.update(platforms);
+
+    // Check for door interaction - only if not already in quiz, player is displaced, and game is not over
+    if (!quizActive && isDisplaced && !gameOver && 
+        player.sides.right >= doors[0].position.x && 
+        player.position.y + player.height >= doors[0].position.y && 
+        player.position.y <= doors[0].position.y + doors[0].image.height) {
+        
+        // Check if the player is on a platform
+        if (player.isOnGround) {
+            // Only show quiz if not already triggered and enough time has passed
+            const currentTime = Date.now();
+            if (!doorReached && (currentTime - lastQuestionTime > 1000)) {
+                doorReached = true;
+                startQuiz();
+            }
+        } else {
+            // Provide feedback that the player must step on a brick
+            document.getElementById('feedback').textContent = 'You must step on the bricks first!';
+            document.getElementById('feedback').style.color = '#f44336';
+        }
+    }
+}
+
+
+
+
+function updateTimer() {
+    const timerDisplay = document.getElementById('timer');
+    if (timerDisplay) {
+        timerDisplay.textContent = formatTime(timeLeft);
+    }
+
+    if (timeLeft === 0) {
+        clearInterval(timerInterval);
+        gameOver = true; // Set game over flag
+        document.getElementById('timeUpMessage').style.display = 'block'; // Display "Time's up!" message
+
+        // Show the final score when the timer is up
+        setTimeout(function () {
+            const finalScoreElement = document.getElementById('finalScore');
+            finalScoreElement.textContent = `Final Score: ${score}`;
+            finalScoreElement.style.display = 'block'; // Make it visible
+            saveFinalScore(); // Save score to leaderboard
+        }, 1000);
+    } else {
+        timeLeft--;
+    }
+}
+
+function updateTimer() {
+    const timerDisplay = document.getElementById('timer');
+    if (timerDisplay) {
+        timerDisplay.textContent = formatTime(timeLeft);
+    }
+
+    if (timeLeft === 0) {
+        clearInterval(timerInterval);
+        document.getElementById('timeUpMessage').style.display = 'block'; // Display "Time's up!" message
+
+        // Show the final score when the timer is up
+        setTimeout(function () {
+            const finalScoreElement = document.getElementById('finalScore');
+            finalScoreElement.textContent = `Final Score: ${score}`;
+            finalScoreElement.style.display = 'block'; // Make it visible
+            saveFinalScore(); // Save score to leaderboard
+        }, 1000);
+    } else {
+        timeLeft--;
+    }
+}
+        animate();
+        function saveFinalScore() {
+    const playerName = prompt("Enter your player name:"); // Prompt for player's name
+    if (!playerName) return; // Exit if no name is entered
+
+    const gradeSection = prompt("Enter your grade and section:"); // Prompt for grade/section
+    if (!gradeSection) return; // Exit if no grade/section is entered
+
+    const dbRequest = indexedDB.open("LeaderboardDB", 1);
+
+    dbRequest.onsuccess = (event) => {
+        const db = event.target.result;
+        const transaction = db.transaction("scores", "readwrite");
+        const objectStore = transaction.objectStore("scores");
+
+        const newScore = {
+            playerName: playerName,
+            gradeSection: gradeSection, // Added Grade/Section
+            score: score
+        };
+
+        objectStore.add(newScore).onsuccess = () => {
+            alert("Score successfully saved!");
+            displayLeaderboard(); // Refresh leaderboard
+        };
+    };
+}
+
+function submitScore(score) {
+            saveFinalScore(score);  // Automatically saves with logged-in profile
+        }
+
+        
+
+        
+    </script>
+</body>
+</html>

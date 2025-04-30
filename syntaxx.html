@@ -1,0 +1,130 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <title>Opening Scroll Design</title>
+    <style>
+        @font-face {
+            font-family: 'Forta';
+            src: url('fonts/Forta.ttf');
+        }
+
+        body {
+            font-family: 'Forta', sans-serif;
+            display: flex;
+            height: 100vh;
+            margin: 0;
+            justify-content: center;
+            align-items: center;
+            background-image: url(bgg.gif);
+            background-repeat: no-repeat;
+            background-size: 100%;
+            background-position: 10%;
+        }
+
+        .scroll-container {
+            background: #f8f1e9;
+            border: 5px solid #c4a484;
+            border-image: url('img/scroll_border.png') 30 round;
+            padding: 2rem;
+            box-shadow: 0 8px 15px rgba(0, 0, 0, 0.6);
+            width: 40rem;
+            text-align: center;
+            position: relative;
+        }
+
+        .scroll-header {
+            font-size: 2rem;
+            color: #8B4513;
+        }
+
+        .scroll-content p {
+            color: #5A3E36;
+        }
+
+        .scroll-button {
+            background: #c4a484;
+            border: 3px solid #8B4513;
+            color: #5A3E36;
+            padding: 10px 20px;
+            border-radius: 20px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .scroll-button:hover {
+            background: #a68b5b;
+        }
+
+        .nav-buttons {
+            display: flex;
+            justify-content: space-between;
+            margin-top: 1rem;
+        }
+
+        .nav-button {
+            background: #c4a484;
+            border: 3px solid #8B4513;
+            color: #5A3E36;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            transition: background 0.3s;
+        }
+
+        .nav-button:hover {
+            background: #a68b5b;
+        }
+
+        .scroll-contents{
+            background-color:#86c1de;
+            border-radius: 1rem;
+            box-shadow:
+            inset -2px 2px 1px grey,
+            inset -2px -2px 1px 1px gray,
+            inset 1px 0px 1px 1px lightgray;
+        }
+    </style>
+</head>
+<body>
+    <audio id="background-music" autoplay loop>
+        <source src="bgm.mp3">
+    </audio>
+    <div class="scroll-container">
+        <div class="scroll-header">Java Syntax</div>
+        <div class="scroll-content">
+            <p>public class Main { <br>
+                public static void main(String[] args) { <br>
+                  System.out.println("Hello World"); <br>
+                } <br>
+              }</p>
+        </div>
+        
+        <button class="scroll-button" id="showButton">See Output</button>
+        <div class="scroll-contents" id="exampleBox" style="display: none;">
+            <p>
+                <b>Output:</b> Hello World
+            </p>
+        </div>
+
+        <div class="nav-buttons">
+            <a href="home.html" class="nav-button"><i class="fa-solid fa-house"></i> Home</a>
+            <a href="intro.html" class="nav-button"><i class="fa-solid fa-arrow-left"></i> Previous</a>
+            <a href="Output.html" class="nav-button">Next <i class="fa-solid fa-arrow-right"></i></a>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById('showButton').addEventListener('click', function() {
+            document.getElementById('exampleBox').style.display = 'block';
+            this.remove();
+        });
+
+        const audio = document.getElementById('background-music');
+  audio.volume = 0.5; // Volume range is from 0.0 (silent) to 1.0 (full volume)
+
+    </script>
+</body>
+</html>

@@ -1,0 +1,1111 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title class="tab">JAVAMANJI</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+
+       
+
+        @font-face {
+            font-family:'Forta';
+            src: url(fonts/Forta.ttf);
+        }
+        body {
+            font-family: 'Forta', sans-serif;
+            margin: 0%;
+            padding: 0;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            background-image: url(bgg.gif);
+            background-repeat: no-repeat;
+            background-size: cover;
+        background-position: center;
+          
+
+           
+            
+            background-repeat: no-repeat;
+            color: #000;
+        }
+
+        .sidebar {
+            max-width: 18rem;
+            height: 100vh;
+            background: linear-gradient(45deg, #b3e5fc, #81d4fa, #4fc3f7);
+            padding: 1rem;
+            position: fixed;
+            left: -21rem;
+            top: 0;
+            overflow-y: auto;
+            transition: left 0.3s ease;
+            box-shadow:
+            inset -6px 4px 1px grey,
+            inset -6px -4px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+        }
+
+        .sidebar.active {
+    left: 0; 
+}
+
+        .sidebar h2 {
+            color: #ffffff;
+            text-align: center;
+        }
+
+        .sidebar ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .sidebar ul li {
+            margin: 10px 0;
+        }
+
+        .sidebar ul li a {
+            text-decoration: none;
+            color:black;
+            display: block;
+            padding: 3px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 5rem;
+            transition: 0.3s;
+        }
+
+        .sidebar ul li a:hover {
+            background: #ffffff;
+            color: #007bb5;
+        }
+
+        .main-content {
+            flex: 1;
+           
+            padding: 1rem;
+        }
+
+        .normal {
+            background: linear-gradient(45deg, #b3e5fc, #81d4fa, #4fc3f7);
+            padding: 0.8rem;
+            text-align: center;
+            font-size: 24px;
+            font-weight: bold;
+            color:black;
+            box-shadow:
+            inset -2px 4px 2px grey,
+            inset -6px -2px 4px 1px gray,
+            inset 0px 0px 1px 4px lightgray;
+
+        }
+
+        section {
+            margin-top: 20px;
+            text-align: center;
+            font-size: 18px;
+        }
+
+        .navig {
+            list-style: none;
+            }
+
+            .navig a {
+            color: black;
+            text-decoration: none;
+            padding: 0.5rem;
+            background: #86c1de;
+            border-radius: 0.5em;
+            font-size: 0.8rem;
+            box-shadow:
+            inset -2px 2px 1px grey,
+            inset -2px -2px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+
+         }
+
+         .navig a i{
+            margin: 8px;
+         }
+
+         .navig .leads{
+            padding: 10px;
+         }
+
+            .navig a:active{
+            box-shadow:
+            -5px 2px 1px #191919,
+            -5px -2px 1px 1px#191919,
+            2px 0px 1px 1px #191919;
+            }
+
+            .navig a:hover {
+            background-color: #56aeff;
+         
+         }
+
+       
+        .options-panel.active {
+            max-height: 200px;
+            padding: 15px;
+        }
+
+
+        .toggle-btn {
+            background-color: #008CBA;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .toggle-btn:hover {
+            background-color: #005f7a;
+        }
+
+        .card{
+          
+            color: black;
+            text-decoration: none;
+           
+            margin-bottom: auto;
+            justify-content: center; 
+          text-align: center;
+            border-radius: 5px;
+            }
+
+
+         .sidebar::-webkit-scrollbar-thumb {
+            background-color: lightpink;
+            border-radius: 10px;
+        }
+
+          .sidebar::-webkit-scrollbar-track {
+            background-color: lightpink;
+        }
+
+            .Middle{
+                text-align: center;
+                color: #4fc3f7;
+                padding: 1rem;
+                margin-left: 4rem;
+                margin-top: 4rem;
+                align-items: center;
+                text-transform: uppercase;
+            
+            
+                }
+
+            .Middle h1:hover{
+               transform: translateY(10px);
+            }
+
+            .Middle h1{
+               font-size: 5rem;
+               justify-content: center; 
+               transition:0.3s;
+               text-shadow: 
+               -4px 6px 0 black;
+               
+            }
+
+            .Middle p{
+               font-size: 1.6rem;
+               transition:0.3s;
+               text-shadow: 
+               -2px 2px 0 black;
+               
+               
+            }
+
+            .Middle p:hover{
+               transform: translateY(10px);
+            }
+
+            .play{
+                text-decoration-line: none;
+            color: black;
+            border-radius: 4px;
+            
+            padding: 10px;
+            background: #86c1de;
+            cursor: pointer;
+            margin-left: 0.5rem;
+            font-family: 'Forta', sans-serif;
+            font-size: 20px;
+            box-shadow:
+            inset -2px 2px 1px grey,
+            inset -2px -2px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+            }
+
+            .play:hover{
+               cursor: pointer;
+               background-color:#78adc7 ;
+            }
+
+            .play:active{
+            top: 5px;
+            box-shadow:
+            -5px 2px 1px #191919,
+               -5px -2px 1px 1px#191919,
+               2px 0px 1px 1px #191919;
+               }
+        
+
+            .normal .settings{
+                color: #000;
+               float: right;
+               
+               transform: 0.3s;
+            }
+
+            .normal .settings:hover{
+                color:white;
+               transition: 0.7s;
+            }
+
+            body.dark-mode {
+            background-color: #121212;
+            color: #ffffff;
+            }
+
+            body {
+                background-color: #ffffff;
+                color: #121212;
+                transition: background-color 0.3s ease, color 0.3s ease;
+            }
+
+            body.dark-mode {
+                background-color: #121212;
+                color: #ffffff;
+            }
+
+            .settings-panel {
+                display: none;
+                position: absolute;
+                top: 60px;
+                right: 20px;
+                background-color: #4fc3f7;
+                color: #fff;
+                padding: 1rem;
+                border-radius: 8px;
+                box-shadow: 0 4px 10px rgba(0, 0, 0, 0.7);
+                opacity: 0;
+                transform: translateY(-10px);
+                transition: opacity 0.3s, transform 0.3s;
+            }
+
+            .settings-panel.active {
+                display: block;
+                opacity: 1;
+                transform: translateY(0);
+            }
+
+            .option {
+                display: flex;
+                justify-content: space-between;
+                align-items: center;
+                margin: 0.5rem 0;
+            }
+
+
+            .toggle-switch {
+                position: relative;
+                max-width: 40px;
+                max-height: 20px;
+            }
+
+            .toggle-switch input {
+                display: none;
+            }
+
+            .Switch {
+                max-width: 100%;
+                max-height: 100%;
+                background-color: white;
+                border-radius: 20px;
+                position: relative;
+                transition: background-color 0.3s;
+            }
+
+            .Switch::before {
+                content: "";
+                max-width: 18px;
+                max-height: 18px;
+                background-color: black;
+                border-radius: 50%;
+                position: absolute;
+                top: 1px;
+                left: 2px;
+                transition: transform 0.3s;
+            }
+
+            input:checked + .Switch {
+                background-color: white;
+            }
+
+            input:checked + .Switch::before {
+                transform: translateX(20px);
+            }
+
+
+            .settings {
+                font-size: 24px;
+                color: #fff;
+                margin-top: 1.5rem;
+                cursor: pointer;
+                transition: transform 0.3s;
+            }
+
+            .settings:hover {
+                transform: rotate(90deg);
+            }
+
+            body.dark-mode .sidebar {
+                background: linear-gradient(45deg, #1e1e1e, #2b2b2b, #3a3a3a); 
+            
+            }
+
+            body.dark-mode .sidebar h2,
+            body.dark-mode .sidebar ul li a {
+                color: #ffffff;
+                background: rgba(255, 255, 255, 0.1);
+            }
+
+            body.dark-mode .sidebar ul li a:hover {
+                background-color:#4fc3f7;
+                color: #ffffff;
+            }
+
+            body.dark-mode .normal {
+                background: linear-gradient(45deg, gray, #2b2b2b, #3a3a3a); 
+                color: #ffffff;
+            }
+            body.dark-mode .featured-card a{
+                
+                color:#121212;
+            }
+
+            body.dark-mode .featured-card a:hover{
+                background:#4fc3f7 ;
+                color:#121212;
+            }
+
+            body.dark-mode .username{
+             color: #ffffff;
+             
+            }
+
+            #sound-toggle + .Switch {
+            background-color: #ccc;
+            }
+
+            #sound-toggle:checked + .Switch {
+            background-color:  black;
+            }
+
+            .play i {
+            margin-right: 8px; 
+            }
+
+            .normal .bars{
+             color: #000;
+             margin-right: 40rem ;
+             position: absolute;
+            left: 2rem;
+            top: 9%;
+            transform: translateY(-50%);
+            transition: left 0.3s ease;
+            z-index: 10; /* Ensures it's above other elements */
+            }
+
+            .bars:hover {
+                color:white;
+                transition: 0.7s;
+            }
+
+            .bars.moved {
+            left: 22rem;
+    }
+    .profile-container {
+            max-width: 350px; 
+            margin: auto; 
+            border-radius: 15px; 
+            padding: 20px; 
+            background: #56aeff; 
+            box-shadow:
+            inset -2px 2px 1px grey,
+            inset -2px -2px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+        }
+        .avatar { 
+            max-width: 120px; 
+            max-height: 120px; 
+            border-radius: 50%; 
+            margin-bottom: 10px ; 
+            border: 4px solid #000; 
+            transition: transform 0.3s ease-in-out; 
+        }
+        .avatar:hover {
+            transform: scale(1.1); 
+        }
+        .username { 
+            font-weight: bold; 
+            margin-bottom: 15px; 
+            color:#000; 
+            
+        }
+        .avatar-options img { 
+            max-width: 60px; 
+            max-height: 60px; 
+            border-radius: 50%; 
+            cursor: pointer; 
+            margin: 5px;
+            border: 3px solid transparent; 
+        }
+        .avatar-options img:hover { 
+            border-color: black; 
+        }
+        .input-container {
+            margin-top: 15px;
+        }
+        .input-container input {
+            background-color:white; 
+            border: white; 
+            border-radius: 5px; 
+            padding: 5px 10px; 
+            font-family: 'Press Start 2P', cursive; 
+            text-align: center; 
+        }
+        .reset-btn {
+            background-color: red; 
+            color: #fff;
+            border: none; 
+            border-radius: 5px; 
+            padding: 5px 15px; 
+            font-family: 'Forta', sans-serif;
+            margin-top: 10px; 
+            cursor: pointer; 
+            font-family: 'Press Start 2P', cursive;
+        }
+
+        .reset-btn:hover{
+            background-color: darkred;
+        }
+        .profile-popup {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            border-radius: 15px;
+            padding: 20px;
+            
+        }
+        .close-btn {
+            background-color: #86c1de;
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            font-family: 'Forta', sans-serif;
+            box-shadow:
+            inset -2px 2px 1px grey,
+            inset -2px -2px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+        }
+
+        .close-btn:hover{
+            background-color: #008CBA;
+        }
+        
+        .saves{
+            background-color: #86c1de;
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 15px;
+            font-family: 'Forta', sans-serif;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow:
+            inset -2px 2px 1px grey,
+            inset -2px -2px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+        }
+
+        .saves:hover{
+            background-color: #008CBA;
+        }
+
+        .avatars{
+            max-width: 8rem; 
+            max-height: 8rem; 
+            border-radius: 50%; 
+            margin-bottom: 2rem; 
+            border: 6px solid gray; 
+            transition: transform 0.3s ease-in-out; 
+        }
+     
+        .outline {
+    text-shadow: 
+        2px  #00A3FF,   
+        -2px 0 #FFA500;   
+  
+    
+}
+
+    .out{
+            cursor: pointer;
+            color: black;
+            text-decoration: none;
+            padding: 0.5rem;
+            background: #86c1de;
+            font-family: 'Forta', sans-serif;
+            border-radius: 0.5em;
+            font-size: 0.8rem;
+            box-shadow:
+            inset -2px 2px 1px grey,
+            inset -2px -2px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+    }
+
+
+        
+
+    
+       
+
+         .save-btn{
+            background-color: #86c1de;
+            color: #121212;
+            font-family: 'Forta', sans-serif;
+            border: none;
+            border-radius: 5px;
+            padding: 5px 15px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow:
+            inset -2px 2px 1px grey,
+            inset -2px -2px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+         }
+
+         .leads li{
+            padding: 2rem;
+         }
+
+         .featured-card {
+            display: none;
+            position: fixed;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            background: linear-gradient(45deg, #b3e5fc, #81d4fa, #4fc3f7);
+            border-radius: 15px;
+            padding: 0.5rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+            max-width: 800px;
+            height: 500px;
+            text-align: center;
+            z-index: 999;
+            box-shadow:
+            inset -6px 4px 3px grey,
+            inset -6px -2px 1px 1px gray,
+            inset 1px 0px 1px 1px lightgray;
+        }
+
+        .featured-card.show {
+            display: block;
+        }
+
+        body.dark-mode .featured-card{
+            background: linear-gradient(45deg, #1e1e1e, #2b2b2b, #3a3a3a); 
+            
+        }
+        .card-content h3 {
+            margin-bottom: 15px;
+            font-size: 2rem;
+            color: brown;
+            
+        }
+
+        body.dark-mode .card-content h3{
+            color: white;
+        }
+
+        .card{
+            display: flex;
+        }
+
+        .topic{
+            text-decoration: none;
+            color: black;
+            
+            display: block;
+            padding: 1px;
+            background: rgba(255, 255, 255, 0.3);
+            border-radius: 1rem;
+           width: 10rem;
+            transition: 0.3s;
+            font-size: 0.9rem;
+           margin-right: 2rem;
+            box-shadow:
+            inset -6px 4px 1px grey,
+            inset -6px -2px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+
+            }
+
+            .topic:hover{
+               cursor: pointer;
+               background-color:#78adc7 ;
+               transform: translateY(10%);
+            
+            }
+            
+            .topic:active{
+               top: 5px;
+            box-shadow:
+            -6px 2px 1px #191919,
+               -6px -2px 1px 1px#191919,
+               2px 0px 1px 1px #191919;
+               
+            }
+
+        .close {
+            background: #8b5e3c;
+            color: #fff;
+            border: none;
+            padding: 5px 10px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+            box-shadow:
+            inset -1px 1px 1px grey,
+            inset -1px -1px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+        }
+
+        .close:hover{
+            background-color: brown;
+            box-shadow:
+            inset -2px 2px 1px grey,
+            inset -2px -2px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+        }
+
+        .Instruc{
+            background-color:#86c1de;
+            color: black;
+            border-radius: 1rem;
+            
+            margin-bottom: 1rem;
+            box-shadow:
+            inset -6px 4px 1px grey,
+            inset -6px -4px 1px 1px gray,
+            inset 2px 0px 1px 1px lightgray;
+        }
+
+        .Instruc p{
+            margin: 0.5rem;
+            padding: 0.7rem;
+        }
+
+        .ins{
+            color: white;
+            text-decoration: underline;
+           
+            
+        }
+        
+       
+       
+      
+    </style>
+    
+</head>
+<body onload="loadUserProfile()">
+    <audio id="background-music" autoplay loop>
+        <source src="bgm.mp3">
+    </audio>
+  
+    <div class="sidebar" id="sidebar">
+     <a href="http://127.0.0.1:5502/home.html" class="logo"><img src="logo.png" alt=""></h2></a>
+    <img  class="avatars" src="Avatar.png" alt="User Avatar"  id="sidebar-avatar">
+    <div class="username" id="username-display">PLAYER NAME</div>
+  
+    
+        <ul class="navig">
+            
+            <li><a href="#"onclick="openProfilePopup()"><i class="fa-solid fa-circle-user"></i>My Profile</a></li>
+            <li><a href="leaderboard.html" class="leads"><i class="fa-solid fa-star"></i>Leaderboard</a></li>
+            <li><a href="host.html" class="leads"><i class="fa-solid fa-user-tie"></i>Admin panel</a></li>
+            <li><a href="about us.html" class="leads"><i class="fa-solid fa-address-card"></i>About us</a></li>
+        </ul>
+        <div class="profile-popup" id="profile-popup">
+        <div class="profile-container">
+            <img id="avatar" class="avatar" src="Avatar.png" alt="User Avatar">
+            
+            <div class="avatar-options">
+                <img src="Avatar.png" onclick="changeAvatar('Avatar.png')">
+                <img src="giga.png" onclick="changeAvatar('giga.png')">
+            </div>
+         
+            <button onclick="saveAvatar()" class="save-btn">Save Avatar</button>
+            
+            <div class="input-container">
+                <input type="text" id="username-input" placeholder="Enter Player Name"/>
+                <button onclick="changeUsername()" class="saves">Save Name</button>
+            </div>
+
+
+            
+            <button class="reset-btn" onclick="resetProfile()">Reset Profile</button>
+            <button class="close-btn" onclick="closeProfilePopup()">Close</button>
+        </div>
+    </div>
+     
+      
+       </div>
+    </div>
+    
+    <div class="normal">
+        <a href="home.html" class="logo"><img src="logo.png" alt=""></h2></a>
+        <a href="#" class="bars" id="bars-btn">
+            <i class="fa-solid fa-bars"></i>
+        </a>
+       
+        <a href="#" class="settings" id="settings-btn">
+            <i class="fa-solid fa-gear"></i>
+        </a>
+    </div>
+    
+    <div class="settings-panel" id="settings-panel">
+        <h3>Settings</h3>
+        
+        <div class="option">
+            <span>Dark Mode</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="dark-mode-toggle">
+                <span class="Switch"></span>
+            </label>
+        </div>
+
+        <div class="option">
+            <span>Sound</span>
+            <label class="toggle-switch">
+                <input type="checkbox" id="sound-toggle" checked>
+                <span class="Switch"></span>
+            </label>
+        </div>
+    </div>
+
+    <div class="bars-panel" id="bars-panel">
+        
+    </div>
+    </div>
+    
+        <div class="Middle">
+            <h1 class="outline">Java programming</h1>
+            <p class="outline">Enjoy while learning!</p>
+        
+            <div class="plays">
+                <button class="play"><i class="fa-solid fa-gamepad"></i> Start</button>
+                
+                <div class="featured-card" id="popup-card">
+                    <div class="card-content">
+                        <h3>Featured Topics:</h3>
+                        <ul class="card">
+                            <a href="intro.html" class="topic"><h5>Java Introduction</h5></a>
+                            <a href="syntaxx.html" class="topic"><h5>Java Syntax</h5></a>
+                            <a href="Output.html" class="topic"><h5>Java Output</h5></a>
+                           
+                        </ul>
+
+                        <ul class="card">
+                            <a href="comments.html" class="topic"><h5>Java Comments</h5></a>
+                            <a href="variable.html" class="topic"><h5>Java Variable</h5></a>
+                            <a href="data%20type.html" class="topic"><h5>Java Data Types</h5></a>
+                            <a href="operators.html" class="topic"><h5>Java Operators</h5></a>
+                        </ul>
+
+                        <div class="Instruc">
+                            <div class="in">
+                                <p class="ins">INSTRUCTIONS!!!!</p>
+                           Use w, d, s, a, and space keys to control the game.
+                            <br>
+                            </div>
+                        </div>
+                        <a href="hatdog.html"><button class="play"><i class="fa-solid fa-gamepad"></i>Play</button></a>
+                        <br>
+                        <button class="close">Close</button>
+                    </div>
+                </div>
+            </div>
+    </div>
+
+    <script>
+        const settingsBtn = document.getElementById('settings-btn');
+        const settingsPanel = document.getElementById('settings-panel');
+        const darkModeToggle = document.getElementById('dark-mode-toggle');
+        const barsBtn = document.getElementById('bars-btn');
+        const sidebar = document.querySelector('.sidebar');
+
+        document.querySelector('.play').addEventListener('click', () => {
+            document.getElementById('popup-card').classList.add('show');
+        });
+
+        document.querySelector('.close').addEventListener('click', () => {
+            document.getElementById('popup-card').classList.remove('show');
+        });
+
+        const audio = document.getElementById('background-music');
+  audio.volume = 0.6; // Volume range is from 0.0 (silent) to 1.0 (full volume)
+
+        barsBtn.addEventListener('click', (e) => {
+                e.preventDefault();
+                sidebar.classList.toggle('active');
+                barsBtn.classList.toggle('moved');
+            });
+
+
+        // Show/Hide Settings Panel
+        settingsBtn.addEventListener('click', (e) => {
+            e.preventDefault();
+            settingsPanel.classList.toggle('active');
+        });
+
+
+        // Dark Mode Toggle
+        if (localStorage.getItem('darkMode') === 'enabled') {
+            document.body.classList.add('dark-mode');
+            darkModeToggle.checked = true;
+        }
+
+
+        darkModeToggle.addEventListener('change', () => {
+            if (darkModeToggle.checked) {
+                document.body.classList.add('dark-mode');
+                localStorage.setItem('darkMode', 'enabled');
+            } else {
+                document.body.classList.remove('dark-mode');
+                localStorage.setItem('darkMode', 'disabled');
+            }
+        });
+
+
+        const soundToggle = document.getElementById('sound-toggle');
+        const backgroundMusic = document.getElementById('background-music');
+
+        // Check saved sound preference
+        if (localStorage.getItem('sound') === 'off') {
+            backgroundMusic.pause();
+            soundToggle.checked = false;
+        } else {
+            backgroundMusic.play();
+            soundToggle.checked = true;
+        }
+
+
+
+        // Toggle sound on/off
+        soundToggle.addEventListener('change', () => {
+            if (soundToggle.checked) {
+                backgroundMusic.play();
+                localStorage.setItem('sound', 'on');
+            } else {
+                backgroundMusic.pause();
+                localStorage.setItem('sound', 'off');
+            }
+        });
+
+
+
+
+        function changeAvatar(imagePath) {
+            document.getElementById('avatar').src = imagePath;
+            localStorage.setItem('userAvatar', imagePath); // Save selection
+        }
+
+        function changeAvatar(imagePath) {
+            document.getElementById('avatars').src = imagePath;
+            localStorage.setItem('userAvatar', imagePath); // Save selection
+        }
+
+        function changeUsername() {
+            const username = document.getElementById('username-input').value || 'PLAYER NAME';
+            document.getElementById('username-display').innerText = username;
+            localStorage.setItem('username', username);
+        }
+
+        function resetProfile() {
+            localStorage.clear();
+            location.reload();
+        }
+
+        function openProfilePopup() {
+            document.getElementById('profile-popup').style.display = 'block';
+        }
+
+        function closeProfilePopup() {
+            document.getElementById('profile-popup').style.display = 'none';
+        }
+
+        // Load saved profile on page load
+        window.onload = function() {
+            const savedAvatar = localStorage.getItem('userAvatar');
+            const savedUsername = localStorage.getItem('username');
+            if (savedAvatar) {
+                document.getElementById('avatar').src = savedAvatar;
+            }
+            if (savedUsername) {
+                document.getElementById('username-display').innerText = savedUsername;
+            }
+        }
+
+       // Change Username Function
+    function changeUsername() {
+        const username = document.getElementById('username-input').value;
+        document.getElementById('username-display').innerText = username || 'PLAYER NAME';
+        localStorage.setItem('username', username); // Save to local storage
+    }
+
+    // Change Grade/Section Function
+    function changeGradeSection() {
+        const gradeSection = document.getElementById('gradesection-input').value;
+        document.getElementById('gradesection-display').innerText = gradeSection || 'GRADE/SECTION';
+        localStorage.setItem('gradeSection', gradeSection); // Save to local storage
+    }
+
+    // Load Saved Data on Page Load
+    window.onload = function () {
+        const savedUsername = localStorage.getItem('username');
+        const savedGradeSection = localStorage.getItem('gradeSection');
+
+        if (savedUsername) {
+            document.getElementById('username-display').innerText = savedUsername;
+        }
+
+        if (savedGradeSection) {
+            document.getElementById('gradesection-display').innerText = savedGradeSection;
+        }
+    };
+
+    // Reset Profile Function
+    function resetProfile() {
+        document.getElementById('username-display').innerText = 'PLAYER NAME';
+        document.getElementById('gradesection-display').innerText = 'GRADE/SECTION';
+        localStorage.removeItem('username');
+        localStorage.removeItem('gradeSection');
+    }
+
+    document.getElementById('logoutButton').addEventListener('click', function() {
+            // Clear IndexedDB Data (optional)
+            const request = indexedDB.open("GameProfileDB", 1);
+            request.onsuccess = (event) => {
+                const db = event.target.result;
+                const transaction = db.transaction("profiles", "readwrite");
+                const objectStore = transaction.objectStore("profiles");
+                objectStore.clear(); // Clears stored profile data
+            };
+
+            // Redirect to Login Page
+            window.location.href = "log-in.html"; // Ensure this is your correct file name
+        });
+
+function loadUserProfile() {
+    fetch("load_profile.php")
+        .then(response => response.json())
+        .then(data => {
+            if (data.avatar) {
+                document.getElementById("avatars").src = data.avatar;
+            }
+            if (data.student_name) {
+                document.getElementById("username-display").innerText = data.student_name;
+            }
+            if (data.grade_section) {
+                document.getElementById("gradesection-display").innerText = data.grade_section;
+            }
+        })
+        .catch(error => console.error("Error loading profile:", error));
+}
+
+ // Load saved profile on page load
+ window.onload = function() {
+            const savedAvatar = localStorage.getItem('userAvatar');
+            const savedUsername = localStorage.getItem('username');
+            if (savedAvatar) {
+                document.getElementById('avatar').src = savedAvatar;
+            }
+            if (savedUsername) {
+                document.getElementById('username-display').innerText = savedUsername;
+            }
+        }
+  // Load saved avatar on page load
+  window.onload = function() {
+        const savedAvatar = localStorage.getItem('savedAvatar');
+        if (savedAvatar) {
+            document.getElementById('avatar').src = savedAvatar;
+            document.getElementById('sidebar-avatar').src = savedAvatar;
+        }
+    };
+
+    // Change avatar when clicked
+    function changeAvatar(avatarSrc) {
+        document.getElementById('avatar').src = avatarSrc;
+    }
+
+    // Save the selected avatar
+    function saveAvatar() {
+        const selectedAvatar = document.getElementById('avatar').src;
+        localStorage.setItem('savedAvatar', selectedAvatar);
+
+        // Update sidebar avatar instantly
+        document.getElementById('sidebar-avatar').src = selectedAvatar;
+
+        alert("Avatar saved successfully!");
+    }
+        
+    function changeUsername() {
+        const username = document.getElementById('username-input').value.trim();
+
+        if (username) {
+            // Save username in localStorage
+            localStorage.setItem('username', username);
+
+            // Display the saved username in both profile and sidebar
+            document.getElementById('username-display').innerText = username;
+            document.getElementById('sidebar-username').innerText = username;
+
+            alert("Player Name saved successfully!");
+        } else {
+            alert("Please enter a valid Player Name.");
+        }
+    }
+
+    // Load saved data on page load
+    window.onload = function() {
+        const savedAvatar = localStorage.getItem('savedAvatar');
+        const savedUsername = localStorage.getItem('username');
+
+        if (savedAvatar) {
+            document.getElementById('avatar').src = savedAvatar;
+            document.getElementById('sidebar-avatar').src = savedAvatar;
+        }
+
+        if (savedUsername) {
+            document.getElementById('username-display').innerText = savedUsername;
+            document.getElementById('sidebar-username').innerText = savedUsername;
+        }
+    };
+    </script>
+</body>
+</html>
